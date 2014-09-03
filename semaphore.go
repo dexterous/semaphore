@@ -1,5 +1,7 @@
 package semaphore
 
+import "time"
+
 type permit struct{}
 type Semaphore chan permit
 
@@ -23,6 +25,15 @@ func (s Semaphore) QueueLength() uint {
 
 func (s Semaphore) Acquire() {
   s <- aPermit
+}
+
+func (s Semaphore) TryAcquire() bool {
+  select {
+  case s <-aPermit:
+    return true
+  case <-time.After(500 * time.Millisecond):
+    return false
+  }
 }
 
 func (s Semaphore) Release() {
