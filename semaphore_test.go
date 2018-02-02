@@ -14,9 +14,9 @@ func assert(t *testing.T) *A {
 }
 
 func (a *A) equal(expected uint, actual uint, message string) {
-	if actual != expected {
-    a.T.Errorf(message, expected, actual)
-	}
+  if actual != expected {
+    a.Errorf(message, expected, actual)
+  }
 }
 
 
