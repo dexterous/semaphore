@@ -20,22 +20,22 @@ func (s Semaphore) Capacity() uint {
 }
 
 func (s Semaphore) QueueLength() uint {
-  return uint(len(s))
+	return uint(len(s))
 }
 
 func (s Semaphore) Acquire() {
-  s <- aPermit
+	s <- aPermit
 }
 
 func (s Semaphore) TryAcquire() bool {
-  select {
-  case s <-aPermit:
-    return true
-  case <-time.After(500 * time.Millisecond):
-    return false
-  }
+	select {
+	case s <- aPermit:
+		return true
+	case <-time.After(500 * time.Millisecond):
+		return false
+	}
 }
 
 func (s Semaphore) Release() {
-  <- s
+	<-s
 }
