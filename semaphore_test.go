@@ -14,7 +14,7 @@ func asser(t *testing.T) *A {
 
 func (a A) equalWithMessage(expected uint, actual uint, message string) {
 	if actual != expected {
-		a.Errorf(message, expected, actual)
+		a.Fatalf(message, expected, actual)
 	}
 }
 
