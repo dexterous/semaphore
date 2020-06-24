@@ -1,6 +1,8 @@
 package semaphore
 
-import "time"
+import (
+	"time"
+)
 
 type permit struct{}
 type Semaphore chan permit
@@ -27,11 +29,11 @@ func (s Semaphore) Acquire() {
 	s <- aPermit
 }
 
-func (s Semaphore) TryAcquire() bool {
+func (s Semaphore) TryAcquire(d time.Duration) bool {
 	select {
 	case s <- aPermit:
 		return true
-	case <-time.After(500 * time.Millisecond):
+	case <-time.After(d):
 		return false
 	}
 }

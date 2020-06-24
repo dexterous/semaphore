@@ -57,7 +57,7 @@ func TestSemaphore_Acquire_WithTimeout_AcquirePermit(t *testing.T) {
 
 	asser(t).equal(0, s.QueueLength())
 
-	if !s.TryAcquire() {
+	if !s.TryAcquire(500 * time.Millisecond) {
 		t.Error("Could not acquire permit from Semaphore with spare")
 	}
 
@@ -73,7 +73,7 @@ func TestSemaphore_Acquire_WithTimeout_AcquireTimedout(t *testing.T) {
 
 	asser(t).equal(1, s.QueueLength())
 
-	if s.TryAcquire() {
+	if s.TryAcquire(500 * time.Millisecond) {
 		t.Error("Acquired permit from empty Semaphore")
 	}
 
