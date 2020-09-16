@@ -2,7 +2,7 @@ package semaphore
 
 import (
 	"testing"
-  "time"
+	"time"
 )
 
 type A struct {
@@ -54,16 +54,16 @@ func TestSemaphore_QueueLength_WithAcquiredPermitReleased(t *testing.T) {
 }
 
 func TestSemaphore_Acquire_BeyondCapacity(t *testing.T) {
-  var s = NewSemaphore()
+	var s = NewSemaphore()
 
-  s.Acquire()
+	s.Acquire()
 
-  go func() {
-    s.Acquire()
-    t.Error("Should not be able to acquire second permit")
-  }()
+	go func() {
+		s.Acquire()
+		t.Error("Should not be able to acquire second permit")
+	}()
 
-  time.Sleep(100 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 }
 
 func TestSemaphore_Acquire_WithTimeout_AcquirePermit(t *testing.T) {
