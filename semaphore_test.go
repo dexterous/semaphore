@@ -13,26 +13,26 @@ func asser(t *testing.T) *A {
 	return &A{t}
 }
 
-func (a A) equalWithMessage(expected uint, actual uint, message string) {
+func (a A) equalWithMessage(actual, expected uint, message string) {
 	if actual != expected {
-		a.Fatalf(message, expected, actual)
+		a.Fatalf(message, actual, expected)
 	}
 }
 
-func (a A) equal(expected uint, actual uint) {
-	a.equalWithMessage(expected, actual, "Expected %d, got %d")
+func (a A) equal(actual, expected uint) {
+	a.equalWithMessage(actual, expected, "Expected %d, got %d")
 }
 
 func TestSemaphore_Capacity_OfNew(t *testing.T) {
-	asser(t).equal(1, NewSemaphore().Capacity())
+	asser(t).equal(NewSemaphore().Capacity(), 1)
 }
 
 func TestSemaphore_Capacity_OfNewWithArg(t *testing.T) {
-	asser(t).equal(5, NewSemaphoreWithCapacity(5).Capacity())
+	asser(t).equal(NewSemaphoreWithCapacity(5).Capacity(), 5)
 }
 
 func TestSemaphore_QueueLength_OfNew(t *testing.T) {
-	asser(t).equal(0, NewSemaphore().QueueLength())
+	asser(t).equal(NewSemaphore().QueueLength(), 0)
 }
 
 func TestSemaphore_QueueLength_WithAcquiredPermit(t *testing.T) {
@@ -40,7 +40,7 @@ func TestSemaphore_QueueLength_WithAcquiredPermit(t *testing.T) {
 
 	s.Acquire()
 
-	asser(t).equal(1, s.QueueLength())
+	asser(t).equal(s.QueueLength(), 1)
 }
 
 func TestSemaphore_QueueLength_WithAcquiredPermitReleased(t *testing.T) {
@@ -50,7 +50,7 @@ func TestSemaphore_QueueLength_WithAcquiredPermitReleased(t *testing.T) {
 	s.Acquire()
 	s.Release()
 
-	asser(t).equal(1, s.QueueLength())
+	asser(t).equal(s.QueueLength(), 1)
 }
 
 func TestSemaphore_Acquire_BeyondCapacity(t *testing.T) {
@@ -69,27 +69,27 @@ func TestSemaphore_Acquire_BeyondCapacity(t *testing.T) {
 func TestSemaphore_Acquire_WithTimeout_AcquirePermit(t *testing.T) {
 	var s = NewSemaphore()
 
-	asser(t).equal(0, s.QueueLength())
+	asser(t).equal(s.QueueLength(), 0)
 
 	if !s.TryAcquire(500 * time.Millisecond) {
 		t.Error("Could not acquire permit from Semaphore with spare")
 	}
 
-	asser(t).equal(1, s.QueueLength())
+	asser(t).equal(s.QueueLength(), 1)
 }
 
 func TestSemaphore_Acquire_WithTimeout_AcquireTimedout(t *testing.T) {
 	var s = NewSemaphore()
 
-	asser(t).equal(0, s.QueueLength())
+	asser(t).equal(s.QueueLength(), 0)
 
 	s.Acquire()
 
-	asser(t).equal(1, s.QueueLength())
+	asser(t).equal(s.QueueLength(), 1)
 
 	if s.TryAcquire(500 * time.Millisecond) {
 		t.Error("Acquired permit from empty Semaphore")
 	}
 
-	asser(t).equal(1, s.QueueLength())
+	asser(t).equal(s.QueueLength(), 1)
 }
