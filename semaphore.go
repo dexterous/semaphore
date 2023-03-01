@@ -10,10 +10,10 @@ type Semaphore chan permit
 var aPermit permit
 
 func NewSemaphore() Semaphore {
-	return NewSemaphoreWith(1)
+	return NewSemaphoreWithCapacity(1)
 }
 
-func NewSemaphoreWith(capacity uint) Semaphore {
+func NewSemaphoreWithCapacity(capacity uint) Semaphore {
 	return Semaphore(make(chan permit, capacity))
 }
 

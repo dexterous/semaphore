@@ -28,7 +28,7 @@ func TestSemaphore_Capacity_OfNew(t *testing.T) {
 }
 
 func TestSemaphore_Capacity_OfNewWithArg(t *testing.T) {
-	asser(t).equal(5, NewSemaphoreWith(5).Capacity())
+	asser(t).equal(5, NewSemaphoreWithCapacity(5).Capacity())
 }
 
 func TestSemaphore_QueueLength_OfNew(t *testing.T) {
@@ -44,7 +44,7 @@ func TestSemaphore_QueueLength_WithAcquiredPermit(t *testing.T) {
 }
 
 func TestSemaphore_QueueLength_WithAcquiredPermitReleased(t *testing.T) {
-	var s = NewSemaphoreWith(3)
+	var s = NewSemaphoreWithCapacity(3)
 
 	s.Acquire()
 	s.Acquire()
